@@ -1,19 +1,24 @@
 {{#if usuario}}
-<form action="/usuario/{{usuario.id}}/update" method="post">
-{{else}}   
-    <form action="/usuarios/novo" method="post"></form>
-        <div>
-            <label for="nickname">Nickname:</label>
-            <input type="text" id="nickname" name="nickname" value={{usuario.nickname}}>
-        </div>
+    <h1>Atualizar Usuário</h1>
+    <form action="/usuarios/{{usuario.id}}/update" method="post">
+    
+{{else}}
+    <h1>Cadastrar Usuários</h1>
+    <form action="/usuarios/novo" method="post">
+{{/if}}
 
-        <div>
-            <label for="nome">Nome:</label>
-            <input type="text" id="nome" name="nome" value={{usuario.nome}}>
-        </div>
-        {{#if usuario}}
-        <input type="submit" value="SALVAR"/>
-        {{else}}
-        <input type="submit" value="CADASTRAR"/>
-        {{/if}}
-    </form>
+    <div>
+        <label for="nickname">Nickname:</label>
+        <input type="text" id="nickname" name="nickname" value={{usuario.nickname}}>
+    </div>
+
+    <div>
+        <label for="nome">Nome:</label>
+        <input type="text" id="nome" name="nome" value={{usuario.nome}}>
+    </div>
+    {{#if usuario}}
+    <input type="submit" value="SALVAR" />
+    {{else}}
+    <input type="submit" value="CADASTRAR" />
+    {{/if}}
+</form>
