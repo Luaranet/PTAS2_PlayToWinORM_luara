@@ -97,12 +97,42 @@ app.get("/jogos/novo", (req, res) => {
 })
 
 
-
 app.get("/jogos/:id/update", async (req, res) => {
   const id = parseInt(req.params.id);
   const jogo = await Jogo.findByPk(id, { raw: true });
 
   res.render("formJogo", { jogo });
+});
+
+app.post("/jogos/:id/update", async (req, res) => {
+  const id = parseInt(req.params.id);
+  const dadosJogo = {
+    titulo: req.body.titulo,
+    descricao: req.body.descricao,
+    preco: req.body.preco,
+  };
+  const retorno = await Jogo.update(dadosJogo, {
+    where: { id: id },
+  });
+
+  if (retorno > 0) {
+    res.redirect("/jogos");
+  }
+  else {
+    res.send("foi de vasco");
+  }
+})
+
+//delete
+app.post("/jogos/:id/delete", async (req, res) => {
+  const id = parseInt(req.params.id);
+  const retorno = await Jogo.destroy({ where: { id: id } });
+
+  if (retorno > 0) {
+    res.redirect("/jogos");
+  } else {
+    res.send("Erro ao excluir jogo");
+  }
 });
 
 app.post("/jogos/novo", async (req, res) => {

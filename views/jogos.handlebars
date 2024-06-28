@@ -17,6 +17,8 @@
     <td>{{this.preco}}</td>
     <td>
       <a href="/jogos/{{this.id}}/update">Atualizar jogo.</a>
+      <form action="/jogos/{{this.id}}/delete" method="post">
+                <input type="submit" value="Excluir" />
     </td>
   </tr>
   {{/each}}
