@@ -4,7 +4,12 @@ const express = require("express");
 const exphbs = require("express-handlebars");
 
 const Usuario = require("./models/Usuario");
+
 const Jogo = require("./models/Jogo")
+
+Jogo.belongsToMany(Usuario, { through: "aquisicoes" });
+Usuario.belongsToMany(Jogo, { through: "aquisicoes" });
+
 
 const app = express();
 
@@ -21,8 +26,8 @@ app.use(
 app.use(express.json());
 
 app.get("/", (req, res) => {
-  res.render("home")
-})
+  res.render("home");
+});
 
 //usuarios
 app.get("/usuarios", async (req, res) => {
@@ -32,10 +37,9 @@ app.get("/usuarios", async (req, res) => {
   res.render("usuarios", { usuarios });
 });
 
-
 app.get("/usuarios/novo", (req, res) => {
-  res.render("formUsuario")
-})
+  res.render("formUsuario");
+});
 
 app.post("/usuarios/novo", async (req, res) => {
   const dadosUsuario = {
@@ -50,8 +54,8 @@ app.post("/usuarios/novo", async (req, res) => {
 app.get("/usuarios/:id/update", async (req, res) => {
   const id = parseInt(req.params.id);
   const usuario = await Usuario.findByPk(id, { raw: true });
-  res.render("formUsuario", { usuario })
-})
+  res.render("formUsuario", { usuario });
+});
 
 app.post("/usuarios/:id/update", async (req, res) => {
   const id = parseInt(req.params.id);
