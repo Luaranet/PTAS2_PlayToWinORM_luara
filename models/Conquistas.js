@@ -21,8 +21,8 @@ const Conquista = db.define(
   }
 );
 
-Consquista.belongsTo(Jogo);
-Jogo.hasMany(Consquista);
+Conquista.belongsTo(Jogo);
+Jogo.hasMany(Conquista);
 
 module.exports = Conquista;
 

@@ -5,7 +5,8 @@ const exphbs = require("express-handlebars");
 
 const Usuario = require("./models/Usuario");
 
-const Jogo = require("./models/Jogo")
+const Jogo = require("./models/Jogo");
+const Conquista = require("./models/Conquistas");
 
 Jogo.belongsToMany(Usuario, { through: "aquisicoes" });
 Usuario.belongsToMany(Jogo, { through: "aquisicoes" });
@@ -148,6 +149,51 @@ app.post("/jogos/novo", async (req, res) => {
 
   const jogo = await Jogo.create(dadosJogo);
   res.send("Jogo inserido: " + jogo.id)
+});
+
+app.get("/jogos/:id/conquistas", async (req, res) =>{
+  const id = parseInt(req.params.id);
+  const jogo = await Jogo.findByPk(id, {raw: true});
+
+  const conquistas = await Conquista.findAll({
+      raw: true, 
+      where: {JogoId: id},
+  });
+
+  res.render("conquistas.handlebars", {jogo, conquistas});
+});
+
+app.get("/jogos/:id/novaConquista", async (req, res) => {
+  const id = parseInt(req.params.id);
+  const jogo = await Jogo.findByPk(id, { raw: true });
+
+  res.render("formConquista.handlebars", { jogo });
+});
+
+app.post("/jogos/:id/novaConquista", async (req, res) => {
+  const id = parseInt(req.params.id);
+
+  const dadosConquista = {
+      titulo: req.body.titulo,
+      descricao: req.body.descricao,
+      JogoId: id,
+  };
+
+  await Conquista.create(dadosConquista);
+
+  res.redirect(`/jogos/${id}/conquistas`);
+});
+
+app.get("/jogos/:id/conquistas", async (req, res) => {
+  const id = parseInt(req.params.id);
+  const jogo = await Jogo.findByPk(id, { raw: true });
+
+  const conquista = await Conquista.findAll({
+      raw: true,
+      where: { JogoId: id },
+  });
+
+  res.render("conquistas.handlebars", { jogo, conquista });
 });
 
 
